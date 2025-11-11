@@ -8,6 +8,7 @@ const router = createRouter({
       name: 'home',
       component: () => import('@/views/dashboard.vue'),
     },
+
     {
       path: '/tutors',
       children: [
@@ -16,7 +17,18 @@ const router = createRouter({
         { path: ':id/edit', component: () => import('@/views/tutors/edit.vue')},
         { path: ':id/show', component: () => import('@/views/tutors/show.vue')},
       ]
+      
+    },
+
+    {
+      path: '/ongs',
+      children: [
+        { path: '', component: () => import('@/views/OngList.vue') },
+        { path: 'add', name: 'ongs.add', component: () => import('@/views/OngForm.vue') },
+        { path: ':id/edit', name: 'ongs.edit', component: () => import('@/views/OngForm.vue') },
+      ]
     }
+
   ],
 })
 
