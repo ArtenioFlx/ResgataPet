@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import layoutDefault from '@/layouts/layoutDefault.vue'
 import LoginLayout from '@/views/LoginLayout.vue'
+import ListaOngs from '@/views/Ongs/ListaOngs.vue'
+import NovaOng from '@/views/Ongs/NovaOng.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,10 +51,39 @@ const router = createRouter({
             { path: ':id/edit', component: () => import('@/views/tutors/edit.vue')},
             { path: ':id/show', component: () => import('@/views/tutors/show.vue')},
           ]
+        },
+
+      {
+          path: '/ongs',
+          name: 'ongs',
+          component: ListaOngs
+        },
+        {
+          path: '/ongs/novo',
+          name: 'nova-ong',
+          component: NovaOng
         }
-      ]
-    }
-  ],
-})
+
+
+            ]
+          },
+          {
+            path: '/about',
+            component: { template: '<div>About</div>' }
+          },
+          {
+            path: '/contact',
+            component: { template: '<div>Contact</div>' }
+          },
+
+          {
+        path: '/ongs/:id',
+        name: 'detalhesOng',
+        component: () => import('@/views/Ongs/DetalhesOng.vue')
+      }
+
+
+        ],
+      })
 
 export default router
