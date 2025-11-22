@@ -6,6 +6,26 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/pets',
+      name: 'Pets',
+      component: () => import('@/views/Pet/Pets.vue')
+    },
+    {
+      path: '/pets/new',
+      name: 'NewPet',
+      component: () => import('@/views/Pet/NewPet.vue')
+    },
+    {
+      path: '/pets/:id',
+      name: 'PetDetail',
+      component: () => import('@/views/Pet/PetDetail.vue')
+    },
+    {
+      path: '/pets/:id/edit',
+      name: 'EditPet',
+      component: () => import('@/views/Pet/EditPet.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       component: LoginLayout
