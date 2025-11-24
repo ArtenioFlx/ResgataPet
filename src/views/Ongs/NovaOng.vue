@@ -17,6 +17,21 @@
 
       <textarea v-model="descricao" placeholder="Descrição da ONG..." class="textarea textarea-bordered w-full h-24"></textarea>
 
+      <!-- NOVO CAMPO DE CONTATO PARA AJUDA/PIX -->
+      <div class="form-control w-full mt-2">
+         <label class="label">
+            <span class="label-text font-bold">Contato/Chave PIX para Doações</span>
+            <span class="label-text-alt">Obrigatório para receber ajuda!</span>
+         </label>
+         <input
+            v-model="chavePix"
+            type="text"
+            placeholder="Ex: (99) 99999-9999 ou chavepix@ong.com.br"
+            class="input input-bordered w-full input-info"
+            required
+         />
+      </div>
+
       <!-- CAMPO DE UPLOAD DE IMAGEM -->
       <div class="form-control w-full">
         <label class="label">
@@ -44,8 +59,7 @@
 import { ref } from 'vue'
 import { addOng } from '@/services/ongsService'
 import { useRouter } from 'vue-router'
-import { converterParaBase64 } from '@/utils/imageUtils' // Adicionada função para converter imagem para Base64
-
+import { converterParaBase64 } from '@/utils/imageUtils'
 
 const router = useRouter()
 
@@ -56,7 +70,8 @@ const telefone = ref('')
 const cidade = ref('')
 const estado = ref('')
 const descricao = ref('')
-const imagem = ref('') // Agora guardará o Base64
+const imagem = ref('')
+const chavePix = ref('')
 
 // Função acionada quando o usuário seleciona um arquivo
 const processarImagem = async (event) => {
@@ -64,7 +79,7 @@ const processarImagem = async (event) => {
   if (arquivo) {
     try {
       const base64 = await converterParaBase64(arquivo)
-      imagem.value = base64 // Salva a string gigante na variável imagem
+      imagem.value = base64
     } catch (error) {
       alert("Erro ao processar imagem")
       console.error(error)
@@ -73,6 +88,11 @@ const processarImagem = async (event) => {
 }
 
 const salvarOng = async () => {
+  if (!chavePix.value) {
+     alert("A chave PIX/contato é obrigatória para cadastro.");
+     return;
+  }
+
   const novaOng = {
     nome: nome.value,
     email: email.value,
@@ -80,7 +100,8 @@ const salvarOng = async () => {
     cidade: cidade.value,
     estado: estado.value,
     descricao: descricao.value,
-    imagem: imagem.value
+    imagem: imagem.value,
+    chavePix: chavePix.value,
   }
 
   await addOng(novaOng)

@@ -37,7 +37,7 @@
 
           <!-- PREVIEW -->
           <div v-if="pet.image" class="w-full h-48 bg-base-200 rounded-lg overflow-hidden mt-2">
-            <img :src="pet.image" class="w-full h-full object-cover" />
+            <img :src="pet.image" class="w-full h-full object-cover" :alt="pet.name" />
           </div>
 
           <label class="label"><span class="label-text">Descrição</span></label>
@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive } from 'vue'; // toRaw pode não ser necessário se usarmos desestruturação
 import { useRouter } from 'vue-router';
 import { createPet } from '@/controllers/petsController';
 import { converterParaBase64 } from '@/utils/imageUtils';
@@ -72,25 +72,42 @@ const pet = reactive({
 
 const processarImagem = async (event) => {
   const arquivo = event.target.files[0]
-  if (arquivo) {
-    pet.image = await converterParaBase64(arquivo)
+  if (arquivo && typeof converterParaBase64 === 'function') {
+    try {
+        pet.image = await converterParaBase64(arquivo);
+    } catch (e) {
+        console.error("Erro na conversão da imagem:", e);
+        alert("Não foi possível carregar a imagem. Tente novamente.");
+        pet.image = '';
+    }
   }
 }
 
 const salvarPet = async () => {
   try {
-    // Se não tiver imagem, usa uma padrão
+    if (!pet.name) {
+      alert("Nome do pet é obrigatório!");
+      return;
+    }
+
     if (!pet.image) {
       pet.image = 'https://via.placeholder.com/300x200?text=Pet+Sem+Foto';
     }
 
-    await createPet(pet);
+    // ===============================================
+    // CORREÇÃO CHAVE: Criar uma cópia pura do objeto (sem Proxy do Vue)
+    // Isso garante que o IndexedDB só receba dados serializáveis.
+    // ===============================================
+    const petPuro = { ...pet };
+
+    await createPet(petPuro);
+
     alert('Pet cadastrado com sucesso!');
     router.push('/pets');
 
   } catch (error) {
-    console.error(error);
-    alert(error.message || 'Erro ao cadastrar o pet.');
+    console.error("Erro ao cadastrar pet:", error);
+    alert('Erro ao cadastrar o pet. Verifique o console para detalhes.');
   }
 };
 </script>

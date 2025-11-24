@@ -57,7 +57,7 @@
         ></textarea>
       </div>
 
-      <!-- Contatos -->
+      <!-- Contatos e Ajuda -->
       <div class="space-y-3 mt-4">
         <!-- Email -->
         <div>
@@ -84,9 +84,33 @@
             placeholder="Telefone da ONG"
           />
         </div>
+
+        <!-- NOVO CAMPO: CHAVE PIX / AJUDA -->
+        <div class="border-t pt-3 mt-3 border-base-200">
+            <h3 class="text-lg font-bold text-success mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 inline-block mr-1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0ZM12 8.25v2.25M12 14.25v2.25M10.5 18H9a.75.75 0 0 0-.75.75v1.5c0 .414.336.75.75.75h3.75a.75.75 0 0 0 .75-.75v-1.5a.75.75 0 0 0-.75-.75H12Z" />
+                </svg>
+                Ajude esta ONG!
+            </h3>
+            <p v-if="!editando">
+                <span class="text-sm opacity-60 block">Contato / Chave PIX:</span>
+                <span class="font-medium text-success">{{ ong.chavePix || 'Não informado' }}</span>
+            </p>
+            <input
+                v-else
+                v-model="ong.chavePix"
+                type="text"
+                class="input input-bordered w-full input-success"
+                placeholder="Chave PIX ou contato para doação"
+            />
+        </div>
+        <!-- FIM NOVO CAMPO -->
+
       </div>
 
-          <!-- Botões quando ESTIVER editando (menores) -->
+          <!-- 🔧 Botões quando ESTIVER editando (menores) -->
     <div v-if="editando" class="flex gap-3 mt-6">
       <button
         @click="salvarEdicao"
@@ -146,7 +170,8 @@ const router = useRouter()
 const ong = ref(null)
 
 onMounted(async () => {
-  ong.value = await getOngById(route.params.id)
+  // Converte o ID da rota para Number, garantindo a busca correta no IndexedDB
+  ong.value = await getOngById(Number(route.params.id))
 })
 
 const ativarEdicao = () => {
@@ -169,8 +194,11 @@ const removerOng = async () => {
   const confirmar = confirm("Tem certeza que deseja deletar esta ONG?")
   if (!confirmar) return
 
-  await deleteOng(route.params.id)
+  // CORREÇÃO CHAVE: Garantir que o ID é Number antes de deletar
+  await deleteOng(Number(route.params.id))
+
   alert("ONG deletada com sucesso!")
+
   router.push("/ongs")
 }
 
