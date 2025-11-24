@@ -46,3 +46,6 @@ export async function getOngById(id) {
     req.onsuccess = () => resolve(req.result);
   });
 }
+
+//Serviço para gerenciamento de ONGs no banco de dados IndexedDB
+// CRUD (Create, Read, Update, Delete) para entidades do tipo ONG

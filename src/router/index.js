@@ -1,15 +1,16 @@
+// Importação dos componentes necessários do Vue Router e das views
 import { createRouter, createWebHistory } from 'vue-router'
 import layoutDefault from '@/layouts/layoutDefault.vue'
 import ListaOngs from '@/views/Ongs/ListaOngs.vue'
 import NovaOng from '@/views/Ongs/NovaOng.vue'
 import DetalhesOng from '@/views/Ongs/DetalhesOng.vue'
 import SobreNos from '@/views/SobreNos.vue'
-import MinhaConta from '@/views/MinhaConta.vue' // Importação Nova
+import MinhaConta from '@/views/MinhaConta.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // --- Rotas de Autenticação ---
+    // Rotas de Autenticação
     {
       path: '/login',
       name: 'login',
@@ -26,7 +27,7 @@ const router = createRouter({
       component: () => import('@/views/Auth/AuthForgotPassword.vue')
     },
 
-    // --- Rotas da Aplicação ---
+    // Rotas da Aplicação
     {
       path: '/',
       component: layoutDefault,
@@ -36,7 +37,7 @@ const router = createRouter({
           name: 'home',
           component: () => import('@/views/dashBoard.vue'),
         },
-        // Rota NOVA para a área do usuário
+        // Rotas para a área do usuário
         {
           path: 'minha-conta',
           name: 'minha-conta',

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- HERO SECTION MODERNA (Agora com cor da marca) -->
+    <!-- HERO com imagem de fundo e na paleta de cores da RESGATAPET -->
     <div class="hero min-h-[65vh] relative" style="background-image: url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
 
-      <!-- CORREÇÃO AQUI: Trocamos bg-black por um gradiente roxo (primary) -->
+      <!-- Alteração das cores - bg-black por um gradiente roxo para manter a coerência com o restante do projeto -->
       <div class="hero-overlay bg-linear-to-r from-primary/80 to-purple-900/80"></div>
 
       <div class="hero-content text-center text-neutral-content relative z-10">

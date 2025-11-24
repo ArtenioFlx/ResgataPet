@@ -86,7 +86,7 @@
         </div>
       </div>
 
-          <!-- 🔧 Botões quando ESTIVER editando (menores) -->
+          <!-- Botões quando ESTIVER editando (menores) -->
     <div v-if="editando" class="flex gap-3 mt-6">
       <button
         @click="salvarEdicao"

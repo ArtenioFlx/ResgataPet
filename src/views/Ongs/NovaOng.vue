@@ -44,7 +44,8 @@
 import { ref } from 'vue'
 import { addOng } from '@/services/ongsService'
 import { useRouter } from 'vue-router'
-import { converterParaBase64 } from '@/utils/imageUtils' // Importando nossa função mágica
+import { converterParaBase64 } from '@/utils/imageUtils' // Adicionada função para converter imagem para Base64
+
 
 const router = useRouter()
 
@@ -79,7 +80,7 @@ const salvarOng = async () => {
     cidade: cidade.value,
     estado: estado.value,
     descricao: descricao.value,
-    imagem: imagem.value // Salva o Base64 no banco
+    imagem: imagem.value
   }
 
   await addOng(novaOng)

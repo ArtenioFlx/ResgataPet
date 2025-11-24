@@ -20,3 +20,5 @@ export async function updatePet(pet) {
 export async function deletePet(id) {
   return await service.deletePet(id);
 }
+
+// Segue a mesma lógica do ongsController.js

@@ -87,11 +87,8 @@ const fazerLogin = async () => {
       if (usuario) {
         // Verifica a senha
         if (usuario.senha === senha.value) {
-
-            // ============================================
-            // SUCESSO! Salva a sessão no LocalStorage
-            // ============================================
-            const sessaoUsuario = {
+            // Salva a sessão no LocalStorage
+                        const sessaoUsuario = {
                 id: usuario.id,
                 nome: usuario.nome,
                 email: usuario.email,

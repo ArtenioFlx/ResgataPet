@@ -122,7 +122,7 @@ const fazerCadastro = async () => {
         id: Date.now(), // ID único simples
         nome: nome.value,
         email: email.value,
-        senha: senha.value, // Em um app real, nunca salve senha pura!
+        senha: senha.value,  // salva as senhas (é ideal algum tipo de criptografia em aplicações reais)
         foto: fotoPerfil.value,
         funcao: 'Protetor', // Valor padrão
         desde: new Date().toLocaleDateString('pt-BR')

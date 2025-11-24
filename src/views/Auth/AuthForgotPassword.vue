@@ -39,6 +39,7 @@
 </template>
 
 <script setup>
+// Importando funções reativas e o roteador do Vue
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 

@@ -46,3 +46,5 @@ export async function getPetById(id) {
     req.onsuccess = () => resolve(req.result);
   });
 }
+//Serviço para gerenciamento de Pets no banco de dados IndexedDB
+// CRUD (Create, Read, Update, Delete) para entidades do tipo PetS
