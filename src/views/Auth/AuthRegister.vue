@@ -7,7 +7,6 @@
 
         <form @submit.prevent="fazerCadastro">
 
-          <!-- Foto de Perfil -->
           <div class="flex flex-col items-center mb-4">
              <div class="w-24 h-24 rounded-full bg-base-200 overflow-hidden mb-2 border-2 border-secondary">
                 <img v-if="fotoPerfil" :src="fotoPerfil" class="w-full h-full object-cover" />
@@ -23,7 +22,6 @@
              </label>
           </div>
 
-          <!-- Nome -->
           <div class="form-control mb-4">
             <label class="label"><span class="label-text">Nome Completo</span></label>
             <input
@@ -35,7 +33,14 @@
             />
           </div>
 
-          <!-- E-mail -->
+          <div class="form-control mb-4">
+            <label class="label"><span class="label-text">Função no Resgata Pet</span></label>
+            <select v-model="funcao" class="select select-bordered w-full" required>
+                <option disabled value="">Selecione sua função</option>
+                <option v-for="role in funcoesDisponiveis" :key="role" :value="role">{{ role }}</option>
+            </select>
+          </div>
+
           <div class="form-control mb-4">
             <label class="label"><span class="label-text">E-mail</span></label>
             <input
@@ -47,7 +52,6 @@
             />
           </div>
 
-          <!-- Senha -->
           <div class="form-control mb-6">
             <label class="label"><span class="label-text">Senha</span></label>
             <input
@@ -79,22 +83,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { converterParaBase64 } from '@/utils/imageUtils'
-import Localbase from 'localbase'
+// IMPORTANTE: Usando o novo controller usersController e a função registerUser
+import { registerUser } from '@/controllers/usersController'
 
 const router = useRouter()
 const nome = ref('')
 const email = ref('')
 const senha = ref('')
+const funcao = ref('')
 const fotoPerfil = ref('')
 const carregando = ref(false)
 
-let db
-onMounted(() => {
-  db = new Localbase('db')
-})
+const funcoesDisponiveis = [
+    'TUTOR',
+    'REPRESENTANTE ONG',
+    'PROTETOR INDEPENDENTE',
+    'VOLUNTÁRIO GERAL'
+];
 
 const processarImagem = async (event) => {
   const arquivo = event.target.files[0]
@@ -104,38 +112,32 @@ const processarImagem = async (event) => {
 }
 
 const fazerCadastro = async () => {
-  if (nome.value && email.value && senha.value) {
+  if (nome.value && email.value && senha.value && funcao.value) {
     carregando.value = true
 
-    try {
-      // Verifica se e-mail já existe
-      const usuarioExistente = await db.collection('users').doc({ email: email.value }).get()
-
-      if (usuarioExistente) {
-        alert("Ops! Esse e-mail já está cadastrado.")
-        carregando.value = false
-        return
-      }
-
-      // Salva o novo usuário
-      await db.collection('users').add({
-        id: Date.now(), // ID único simples
+    const novoUsuario = {
         nome: nome.value,
         email: email.value,
-        senha: senha.value,  // salva as senhas (é ideal algum tipo de criptografia em aplicações reais)
+        senha: senha.value,
         foto: fotoPerfil.value,
-        funcao: 'Protetor', // Valor padrão
+        funcao: funcao.value,
         desde: new Date().toLocaleDateString('pt-BR')
-      })
+    };
+
+    try {
+      // CORREÇÃO: Usando registerUser em vez de cadastrarUsuario
+      await registerUser(novoUsuario);
 
       alert(`Conta criada com sucesso para ${nome.value}!`)
       router.push('/login')
     } catch (error) {
       console.error(error)
-      alert("Erro ao criar conta.")
+      alert(error.message || "Erro ao criar conta.")
     } finally {
       carregando.value = false
     }
+  } else {
+    alert("Por favor, preencha todos os campos e selecione sua função.")
   }
 }
 </script>

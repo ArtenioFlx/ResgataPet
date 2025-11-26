@@ -1,5 +1,5 @@
-// Importação dos componentes necessários do Vue Router e das views
-import { createRouter, createWebHistory } from 'vue-router'
+// src/router/index.js
+import { createRouter, createWebHistory, RouterView } from 'vue-router' // 1. Importamos RouterView aqui
 import layoutDefault from '@/layouts/layoutDefault.vue'
 import ListaOngs from '@/views/Ongs/ListaOngs.vue'
 import NovaOng from '@/views/Ongs/NovaOng.vue'
@@ -37,7 +37,6 @@ const router = createRouter({
           name: 'home',
           component: () => import('@/views/dashBoard.vue'),
         },
-        // Rotas para a área do usuário
         {
           path: 'minha-conta',
           name: 'minha-conta',
@@ -65,6 +64,8 @@ const router = createRouter({
         },
         {
           path: 'tutors',
+          // 2. CORREÇÃO DEFINITIVA: Usamos o componente RouterView importado
+          component: RouterView,
           children: [
             {
               path: '',

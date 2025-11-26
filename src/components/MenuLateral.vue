@@ -6,7 +6,7 @@
 
       <!-- Seção: Navegação -->
       <li class="menu-title px-4 opacity-60 uppercase text-xs tracking-wider">
-        Navegação
+        Resgatapet
       </li>
 
       <li>

@@ -135,9 +135,6 @@
           Voltar
         </button>
 
-        <button @click="toggleFavorito" class="btn btn-warning w-full">
-          {{ ong.favorito ? "Remover dos favoritos" : "❤️ Favoritar" }}
-        </button>
 
         <button @click="ativarEdicao" class="btn btn-info w-full">
           Editar ONG
@@ -200,15 +197,5 @@ const removerOng = async () => {
   alert("ONG deletada com sucesso!")
 
   router.push("/ongs")
-}
-
-const toggleFavorito = async () => {
-  ong.value.favorito = !ong.value.favorito
-  await updateOng(ong.value)
-  alert(
-    ong.value.favorito
-      ? "Adicionado aos favoritos!"
-      : "Removido dos favoritos!"
-  )
 }
 </script>
