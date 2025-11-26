@@ -6,7 +6,11 @@ export async function getAllPets() {
 
 export async function createPet(pet) {
   if (!pet.name) throw new Error("Nome obrigatório!");
-  return await service.addPet(pet);
+
+  // CORREÇÃO: Remove o Proxy do Vue criando uma cópia limpa do objeto
+  const novoPet = JSON.parse(JSON.stringify(pet));
+
+  return await service.addPet(novoPet);
 }
 
 export async function getPetById(id) {
@@ -14,11 +18,12 @@ export async function getPetById(id) {
 }
 
 export async function updatePet(pet) {
-  return await service.updatePet(pet);
+  // CORREÇÃO: Mesma limpeza aqui para evitar o DataCloneError na edição
+  const petAtualizado = JSON.parse(JSON.stringify(pet));
+
+  return await service.updatePet(petAtualizado);
 }
 
 export async function deletePet(id) {
   return await service.deletePet(id);
 }
-
-// Segue a mesma lógica do ongsController.js
